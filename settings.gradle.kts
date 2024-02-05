@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "YLS-Android"
 include(":app")
+include(":yls")
