@@ -1,33 +1,41 @@
 package com.yourssu.logging.system
 
 import okhttp3.MediaType
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 
-abstract class Logger {
-    abstract fun log(event: YLSEventData)
-}
-
 class YLS {
-    open class RemoteLogger(
+    abstract class Logger {
+        abstract fun log(event: YLSEventData)
+    }
+
+    open class DefaultLogger(
         val url: String,
         val platform: String,       // ex: android
         val serviceName: String,    // ex: Soomsil
     ) : Logger() {
-
+        private val baseEvent = mapOf(
+            "platform" to platform,
+            "serviceName" to serviceName,
+        )
+        private val client = OkHttpClient()
 
         override fun log(event: YLSEventData) {
-
+            val e = event.copy(event = event.event + baseEvent)
+            val request = createRequest(e.toJsonString())
+            client.newCall(request).execute()
         }
 
-        private fun createRequest(json: String): Request =
-            Request.Builder()
+        private fun createRequest(json: String): Request {
+            return Request.Builder()
                 .url(url)
                 .put(RequestBody.create(MediaType.parse("application/json"), json))
                 .build()
+        }
     }
 
-    companion object : Logger() {
+    companion object YLSLogger : Logger() {
         private lateinit var logger: Logger
 
         fun init(logger: Logger) {
