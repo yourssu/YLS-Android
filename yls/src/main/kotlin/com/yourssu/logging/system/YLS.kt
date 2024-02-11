@@ -7,6 +7,31 @@ import okhttp3.RequestBody
 
 class YLS {
     abstract class Logger {
+        protected var eventData: YLSEventData? = null
+
+        open fun user(name: String): Logger {
+            eventData = eventData?.copy(user = name) ?: createDefaultEvent(user = name)
+            return this
+        }
+
+        open fun timestamp(timestamp: String): Logger {
+            eventData = eventData?.copy(timestamp = timestamp) ?: createDefaultEvent(timestamp = timestamp)
+            return this
+        }
+
+        open fun event(event: Map<String, Any>): Logger {
+            eventData = eventData?.let {
+                it.copy(event = it.event.addWithoutOverwriting(event))
+            } ?: createDefaultEvent(event = event)
+            return this
+        }
+
+        protected abstract fun createDefaultEvent(
+            user: String? = null,
+            timestamp: String? = null,
+            event: Map<String, Any>? = null,
+        ): YLSEventData
+
         abstract fun log()
     }
 
@@ -17,29 +42,10 @@ class YLS {
     ) : Logger() {
         private val client = OkHttpClient()
 
-        private var eventData: YLSEventData? = null
-
-        fun user(name: String): DefaultLogger {
-            eventData = eventData?.copy(user = name) ?: defaultEvent(user = name)
-            return this
-        }
-
-        fun timestamp(timestamp: String): DefaultLogger {
-            eventData = eventData?.copy(timestamp = timestamp) ?: defaultEvent(timestamp = timestamp)
-            return this
-        }
-
-        fun event(event: Map<String, Any>): DefaultLogger {
-            eventData = eventData?.let {
-                it.copy(event = it.event.addWithoutOverwriting(event))
-            } ?: defaultEvent(event = event)
-            return this
-        }
-
-        private fun defaultEvent(
-            user: String? = null,
-            timestamp: String? = null,
-            event: Map<String, Any>? = null,
+        override fun createDefaultEvent(
+            user: String?,
+            timestamp: String?,
+            event: Map<String, Any>?,
         ): YLSEventData {
             // todo: create default eventdata object
             val e = YLSEventData("", "2024-01-01", mapOf())
@@ -51,9 +57,10 @@ class YLS {
         }
 
         override fun log() {
-            val e = eventData ?: defaultEvent()
-            val request = createRequest(e.toJsonString())
-            client.newCall(request).execute()
+            val e = eventData ?: createDefaultEvent()
+            println(e.toJsonString())
+//            val request = createRequest(e.toJsonString())
+//            client.newCall(request).execute()
         }
 
         private fun createRequest(json: String): Request {
@@ -64,14 +71,14 @@ class YLS {
         }
     }
 
-    companion object YLSLogger : Logger() {
+    companion object YLSLogger {
         private lateinit var logger: Logger
 
         fun init(logger: Logger) {
             this.logger = logger
         }
 
-        override fun log() {
+        fun log() {
             this.logger.log()
         }
     }
