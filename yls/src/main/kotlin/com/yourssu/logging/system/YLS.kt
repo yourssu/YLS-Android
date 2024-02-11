@@ -7,7 +7,7 @@ import okhttp3.RequestBody
 
 class YLS {
     abstract class Logger {
-        abstract fun log(event: YLSEventData)
+        abstract fun log()
     }
 
     open class DefaultLogger(
@@ -15,14 +15,43 @@ class YLS {
         val platform: String,       // ex: android
         val serviceName: String,    // ex: Soomsil
     ) : Logger() {
-        private val baseEvent = mapOf(
-            "platform" to platform,
-            "serviceName" to serviceName,
-        )
         private val client = OkHttpClient()
 
-        override fun log(event: YLSEventData) {
-            val e = event.copy(event = event.event + baseEvent)
+        private var eventData: YLSEventData? = null
+
+        fun user(name: String): DefaultLogger {
+            eventData = eventData?.copy(user = name) ?: defaultEvent(user = name)
+            return this
+        }
+
+        fun timestamp(timestamp: String): DefaultLogger {
+            eventData = eventData?.copy(timestamp = timestamp) ?: defaultEvent(timestamp = timestamp)
+            return this
+        }
+
+        fun event(event: Map<String, Any>): DefaultLogger {
+            eventData = eventData?.let {
+                it.copy(event = it.event.addWithoutOverwriting(event))
+            } ?: defaultEvent(event = event)
+            return this
+        }
+
+        private fun defaultEvent(
+            user: String? = null,
+            timestamp: String? = null,
+            event: Map<String, Any>? = null,
+        ): YLSEventData {
+            // todo: create default eventdata object
+            val e = YLSEventData("", "2024-01-01", mapOf())
+            return e.copy(
+                user = user ?: e.user,
+                timestamp = timestamp ?: e.timestamp,
+                event = event ?: e.event,
+            )
+        }
+
+        override fun log() {
+            val e = eventData ?: defaultEvent()
             val request = createRequest(e.toJsonString())
             client.newCall(request).execute()
         }
@@ -42,8 +71,8 @@ class YLS {
             this.logger = logger
         }
 
-        override fun log(event: YLSEventData) {
-            this.logger.log(event)
+        override fun log() {
+            this.logger.log()
         }
     }
 }
