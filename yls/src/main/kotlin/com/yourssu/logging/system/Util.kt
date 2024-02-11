@@ -11,11 +11,7 @@ package com.yourssu.logging.system
  * ```
  */
 fun <K, V> Map<K, V>.addWithoutOverwriting(other: Map<K, V>): Map<K, V> {
-    val result = HashMap(this)
-    other.forEach { (key, value) ->
-        if (!result.containsKey(key)) {
-            result[key] = value
-        }
-    }
-    return result
+    val intersectionKeys = this.keys.intersect(other.keys)
+    val diffMap = other - intersectionKeys // `this`에 없는 key-value pair만 추출
+    return this + diffMap
 }
