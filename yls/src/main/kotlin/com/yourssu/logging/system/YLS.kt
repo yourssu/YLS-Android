@@ -7,7 +7,7 @@ import okhttp3.RequestBody
 
 class YLS {
     abstract class Logger {
-        protected abstract fun log(eventData: YLSEventData)
+        abstract fun log(eventData: YLSEventData)
     }
 
     open class DefaultLogger(
@@ -38,15 +38,23 @@ class YLS {
         }
     }
 
-    companion object YLSLogger {
-        private lateinit var logger: Logger
+    companion object YLSLogger : Logger() {
+        private val loggers = ArrayList<Logger>()
 
         fun init(logger: Logger) {
-            this.logger = logger
+            loggers.add(logger)
         }
 
-        fun log() {
-//            this.logger.log()
+        fun deinitAll() {
+            loggers.clear()
+        }
+
+        fun deinit(logger: Logger) {
+            loggers.remove(logger)
+        }
+
+        override fun log(eventData: YLSEventData) {
+            loggers.forEach { it.log(eventData) }
         }
     }
 }
