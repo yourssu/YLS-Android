@@ -7,32 +7,7 @@ import okhttp3.RequestBody
 
 class YLS {
     abstract class Logger {
-        protected var eventData: YLSEventData? = null
-
-        open fun user(name: String): Logger {
-            eventData = eventData?.copy(user = name) ?: createDefaultEvent(user = name)
-            return this
-        }
-
-        open fun timestamp(timestamp: String): Logger {
-            eventData = eventData?.copy(timestamp = timestamp) ?: createDefaultEvent(timestamp = timestamp)
-            return this
-        }
-
-        open fun event(event: Map<String, Any>): Logger {
-            eventData = eventData?.let {
-                it.copy(event = it.event.addWithoutOverwriting(event))
-            } ?: createDefaultEvent(event = event)
-            return this
-        }
-
-        protected abstract fun createDefaultEvent(
-            user: String? = null,
-            timestamp: String? = null,
-            event: Map<String, Any>? = null,
-        ): YLSEventData
-
-        abstract fun log()
+        protected abstract fun log(user: String, timestamp: String, event: Map<String, Any>)
     }
 
     open class DefaultLogger(
@@ -42,32 +17,14 @@ class YLS {
     ) : Logger() {
         private val client = OkHttpClient()
 
-        override fun createDefaultEvent(
-            user: String?,
-            timestamp: String?,
-            event: Map<String, Any>?,
-        ): YLSEventData {
-            // todo: create default eventdata object
-            val e = YLSEventData("", "2024-01-01", mapOf())
-            return e.copy(
-                user = user ?: e.user,
-                timestamp = timestamp ?: e.timestamp,
-                event = event ?: e.event,
-            )
-        }
-
-        override fun log() {
-            val e = eventData ?: createDefaultEvent()
-            println(e.toJsonString())
-//            val request = createRequest(e.toJsonString())
-//            client.newCall(request).execute()
-        }
-
-        private fun createRequest(json: String): Request {
-            return Request.Builder()
+        override fun log(user: String, timestamp: String, event: Map<String, Any>) {
+            val eventData = YLSEventData(user, timestamp, event)
+            val json = eventData.toJsonString()
+            val request = Request.Builder()
                 .url(url)
                 .put(RequestBody.create(MediaType.parse("application/json"), json))
                 .build()
+            client.newCall(request).execute()
         }
     }
 
@@ -79,7 +36,7 @@ class YLS {
         }
 
         fun log() {
-            this.logger.log()
+//            this.logger.log()
         }
     }
 }
