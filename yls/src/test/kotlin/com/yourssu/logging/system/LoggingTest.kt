@@ -14,8 +14,7 @@ class LoggingTest {
             platform = "android",
             serviceName = "Soomsil",
             user = YLS.randomId(),
-            url = "https://example.com",
-            logger = YLS.DebugLogger(),
+            logger = YLS.RemoteLogger(url = "https://example.com"),
         )
     }
 
