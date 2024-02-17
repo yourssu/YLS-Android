@@ -31,7 +31,7 @@ internal class RemoteLoggingWorker(
             val eventData = Gson().fromJson(json, YLSEventData::class.java)
             val response = service?.putLog(eventData) ?: return@let Result.failure()
 
-            // 코드에 따른 상세한 처리
+            // 코드에 따른 상세한 처리 필요
             if (response.code() in 200..299) {
                 Result.success()
             } else {
