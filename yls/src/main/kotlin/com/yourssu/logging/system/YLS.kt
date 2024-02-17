@@ -1,27 +1,40 @@
 package com.yourssu.logging.system
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import retrofit2.Retrofit
+import android.content.Context
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.google.gson.Gson
+import com.yourssu.logging.system.worker.RemoteLoggingWorker
 
 class YLS private constructor() {
     abstract class Logger {
         abstract fun log(eventData: YLSEventData)
     }
 
-    open class RemoteLogger(private val url: String) : Logger() {
+    open class RemoteLogger(private val url: String, context: Context) : Logger() {
 
-        protected val service: HttpService by lazy {
-            Retrofit.Builder()
-                .baseUrl(url)
-                .build()
-                .create(HttpService::class.java)
-        }
+        protected val worker: WorkManager = WorkManager.getInstance(context)
 
         override fun log(eventData: YLSEventData) {
-            GlobalScope.launch {
-                service.putLog(eventData)
-            }
+            val json = Gson().toJson(eventData)
+            val request = OneTimeWorkRequestBuilder<RemoteLoggingWorker>()
+                .setInputData(
+                    workDataOf(
+                        RemoteLoggingWorker.KEY_LOGGING_DATA to json,
+                        RemoteLoggingWorker.KEY_LOGGING_URL to url,
+                    ),
+                ).build()
+            worker.enqueue(request)
+        }
+    }
+
+    open class DebugLogger : Logger() {
+        var lastlyEventedData: String? = null
+
+        override fun log(eventData: YLSEventData) {
+            lastlyEventedData = Gson().toJson(eventData)
+            println("YLS.DebugLogger : $lastlyEventedData")
         }
     }
 
@@ -44,7 +57,7 @@ class YLS private constructor() {
         fun randomId(): String = "aaa"
 
         fun log(vararg events: Pair<String, Any>) {
-            if (!::logger.isInitialized) throw AssertionError()
+            if (!::logger.isInitialized) throw AssertionError("Not Initialized!")
 
             val eventData = YLSEventData(
                 hashedID = hashing(userID),
