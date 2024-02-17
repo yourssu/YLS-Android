@@ -3,6 +3,7 @@ package com.yourssu.logging.system
 import android.content.Context
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
+import android.util.Log
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
@@ -54,26 +55,22 @@ class YLS private constructor() {
     }
 
     open class DebugLogger : Logger() {
-        var lastlyEventedData: String? = null
-
         override fun log(eventData: List<YLSEventData>) {
-            lastlyEventedData = Gson().toJson(eventData)
-            println("YLS.DebugLogger : $lastlyEventedData")
+            Log.d("YLS.DebugLogger", Gson().toJson(eventData))
         }
     }
 
     companion object {
         private lateinit var logger: Logger
-        private lateinit var defaultMap: Map<String, Any>
+        private lateinit var defaultEvent: Map<String, Any>
         private lateinit var userID: String
 
         fun init(
             platform: String,
-            serviceName: String,
             user: String,
             logger: Logger,
         ) {
-            this.defaultMap = mapOf("platform" to platform, "serviceName" to serviceName)
+            this.defaultEvent = mapOf("platform" to platform)
             this.userID = user
             this.logger = logger
         }
@@ -84,7 +81,7 @@ class YLS private constructor() {
             val eventData = YLSEventData(
                 hashedID = hashId(userID),
                 timestamp = getTimestampISO8601(),
-                event = events.toMap() + defaultMap,
+                event = defaultEvent + events.toMap(),
             )
             logger.enqueue(eventData)
         }
