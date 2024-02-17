@@ -29,6 +29,15 @@ class YLS private constructor() {
         }
     }
 
+    open class DebugLogger : Logger() {
+        var lastlyEventedData: String? = null
+
+        override fun log(eventData: YLSEventData) {
+            lastlyEventedData = Gson().toJson(eventData)
+            println("YLS.DebugLogger : $lastlyEventedData")
+        }
+    }
+
     companion object {
         private lateinit var logger: Logger
         private lateinit var defaultMap: Map<String, Any>
@@ -48,7 +57,7 @@ class YLS private constructor() {
         fun randomId(): String = "aaa"
 
         fun log(vararg events: Pair<String, Any>) {
-            if (!::logger.isInitialized) throw AssertionError()
+            if (!::logger.isInitialized) throw AssertionError("Not Initialized!")
 
             val eventData = YLSEventData(
                 hashedID = hashing(userID),
