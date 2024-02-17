@@ -31,7 +31,7 @@ class YLS private constructor() {
             queue.clear()
         }
 
-        abstract fun log(eventData: List<YLSEventData>)
+        protected abstract fun log(eventData: List<YLSEventData>)
     }
 
     open class RemoteLogger(private val url: String, context: Context) : Logger() {
