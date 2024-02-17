@@ -7,5 +7,5 @@ data class YLSResponse(val a: String)
 
 interface HttpService {
     @PUT("/")
-    suspend fun putLog(eventData: YLSEventData): Response<YLSResponse>
+    suspend fun putLog(json: String): Response<YLSResponse>
 }
