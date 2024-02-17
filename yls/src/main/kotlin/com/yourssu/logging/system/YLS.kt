@@ -1,5 +1,6 @@
 package com.yourssu.logging.system
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
@@ -11,8 +12,10 @@ import com.google.gson.Gson
 import com.yourssu.logging.system.worker.RemoteLoggingWorker
 import java.lang.StringBuilder
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.util.Date
 
 class YLS private constructor() {
     abstract class Logger {
@@ -67,11 +70,11 @@ class YLS private constructor() {
 
         fun init(
             platform: String,
-            user: String,
+            user: String?,
             logger: Logger,
         ) {
             this.defaultEvent = mapOf("platform" to platform)
-            this.userID = user
+            this.userID = user ?: generateRandomId(10)
             this.logger = logger
         }
 
@@ -90,34 +93,32 @@ class YLS private constructor() {
             logger.flush()
         }
 
-        fun generateRandomId(length: Int): String {
+        internal fun generateRandomId(length: Int): String {
             val charset = '!'..'~' // ASCII 33 ~ 126
-            return (1..length).map { charset.random() }.joinToString()
+            return (1..length).map { charset.random() }.joinToString("")
         }
 
         // hashId() 메서드에서만 사용되는 변수
         private var _id: String? = null
         private var _hashedId: String? = null
 
-        private fun hashId(id: String): String {
+        internal fun hashId(id: String): String {
             if (_id == id && _hashedId != null) {
                 return _hashedId!!
             }
-            return id.hashString("SHA-256").also {
+            return id.hashString().also {
                 _id = id
                 _hashedId = it
             }
         }
 
-        fun getTimestampISO8601(): String = if (VERSION.SDK_INT >= VERSION_CODES.O) {
-            LocalDateTime.now().atZone(ZoneOffset.UTC).toString()
-        } else {
-            ""
-        }
+        @SuppressLint("SimpleDateFormat")
+        internal fun getTimestampISO8601(): String =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date())
     }
 }
 
-internal fun String.hashString(algorithm: String): String {
+internal fun String.hashString(algorithm: String = "SHA-256"): String {
     return MessageDigest.getInstance(algorithm)
         .digest(this.toByteArray())
         .let { bytes ->

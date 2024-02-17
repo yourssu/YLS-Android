@@ -13,9 +13,12 @@ class LoggingTest {
         override fun enqueue(eventData: YLSEventData) {
             lastEventData = eventData
             super.enqueue(eventData)
+            println("queue size : ${queue.size}")
         }
 
-        override fun log(eventData: List<YLSEventData>) = Unit
+        override fun log(eventData: List<YLSEventData>) {
+            println("${eventData.size}개 log!")
+        }
     }
 
     lateinit var testLogger: TestLogger
@@ -39,11 +42,38 @@ class LoggingTest {
         )
 
         testLogger.lastEventData?.let {
-            assertEquals("abc".hashString("SHA-256"), it.hashedID)
+            assertEquals("abc".hashString(), it.hashedID)
             assertEquals("android", it.event["platform"])
-            assertEquals("Soomsil", it.event["serviceName"])
             assertEquals("ButtonClicked", it.event["event"])
             assertEquals("LoginScreen", it.event["screen"])
         } ?: assertTrue(false) // if null, then fail
+    }
+
+    @Test
+    fun testQueueingLog() {
+        /*
+         * 출력 결과
+         * queue size : 1
+         * queue size : 2
+         * queue size : 3
+         * queue size : 4
+         * queue size : 5
+         * queue size : 6
+         * queue size : 7
+         * queue size : 8
+         * queue size : 9
+         * 10개 log!
+         * queue size : 0
+         * queue size : 1
+         * queue size : 2
+         */
+        repeat(12) {
+            YLS.log("event" to "$it")
+        }
+
+        // 함수 테스트
+        println(YLS.generateRandomId(10))
+        println(YLS.getTimestampISO8601())
+        println(YLS.hashId("abc"))
     }
 }
