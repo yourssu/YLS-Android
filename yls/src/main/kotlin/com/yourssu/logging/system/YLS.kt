@@ -1,22 +1,44 @@
 package com.yourssu.logging.system
 
 import android.content.Context
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
 import com.yourssu.logging.system.worker.RemoteLoggingWorker
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class YLS private constructor() {
     abstract class Logger {
-        abstract fun log(eventData: YLSEventData)
+        protected val queue = ArrayList<YLSEventData>()
+
+        open fun enqueue(eventData: YLSEventData) {
+            if (queue.isNotEmpty() && queue.last() == eventData) {
+                return
+            }
+            queue.add(eventData)
+
+            if (queue.size >= 10) {
+                flush()
+            }
+        }
+
+        open fun flush() {
+            log(queue)
+            queue.clear()
+        }
+
+        abstract fun log(eventData: List<YLSEventData>)
     }
 
     open class RemoteLogger(private val url: String, context: Context) : Logger() {
 
         protected val worker: WorkManager = WorkManager.getInstance(context)
 
-        override fun log(eventData: YLSEventData) {
+        override fun log(eventData: List<YLSEventData>) {
             val json = Gson().toJson(eventData)
             val request = OneTimeWorkRequestBuilder<RemoteLoggingWorker>()
                 .setInputData(
@@ -32,7 +54,7 @@ class YLS private constructor() {
     open class DebugLogger : Logger() {
         var lastlyEventedData: String? = null
 
-        override fun log(eventData: YLSEventData) {
+        override fun log(eventData: List<YLSEventData>) {
             lastlyEventedData = Gson().toJson(eventData)
             println("YLS.DebugLogger : $lastlyEventedData")
         }
@@ -61,12 +83,22 @@ class YLS private constructor() {
 
             val eventData = YLSEventData(
                 hashedID = hashing(userID),
-                timestamp = "",
+                timestamp = getTimestampISO8601(),
                 event = events.toMap() + defaultMap,
             )
-            logger.log(eventData)
+            logger.enqueue(eventData)
+        }
+
+        fun flush() {
+            logger.flush()
         }
 
         private fun hashing(id: String) = "asdf"
+
+        fun getTimestampISO8601(): String = if (VERSION.SDK_INT >= VERSION_CODES.O) {
+            LocalDateTime.now().atZone(ZoneOffset.UTC).toString()
+        } else {
+            ""
+        }
     }
 }
