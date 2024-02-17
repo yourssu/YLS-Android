@@ -8,6 +8,8 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
 import com.yourssu.logging.system.worker.RemoteLoggingWorker
+import java.lang.StringBuilder
+import java.security.MessageDigest
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -76,13 +78,11 @@ class YLS private constructor() {
             this.logger = logger
         }
 
-        fun randomId(): String = "aaa"
-
         fun log(vararg events: Pair<String, Any>) {
             if (!::logger.isInitialized) throw AssertionError("Not Initialized!")
 
             val eventData = YLSEventData(
-                hashedID = hashing(userID),
+                hashedID = hashId(userID),
                 timestamp = getTimestampISO8601(),
                 event = events.toMap() + defaultMap,
             )
@@ -93,7 +93,24 @@ class YLS private constructor() {
             logger.flush()
         }
 
-        private fun hashing(id: String) = "asdf"
+        fun generateRandomId(length: Int): String {
+            val charset = '!'..'~' // ASCII 33 ~ 126
+            return (1..length).map { charset.random() }.joinToString()
+        }
+
+        // hashId() 메서드에서만 사용되는 변수
+        private var _id: String? = null
+        private var _hashedId: String? = null
+
+        private fun hashId(id: String): String {
+            if (_id == id && _hashedId != null) {
+                return _hashedId!!
+            }
+            return id.hashString("SHA-256").also {
+                _id = id
+                _hashedId = it
+            }
+        }
 
         fun getTimestampISO8601(): String = if (VERSION.SDK_INT >= VERSION_CODES.O) {
             LocalDateTime.now().atZone(ZoneOffset.UTC).toString()
@@ -101,4 +118,14 @@ class YLS private constructor() {
             ""
         }
     }
+}
+
+internal fun String.hashString(algorithm: String): String {
+    return MessageDigest.getInstance(algorithm)
+        .digest(this.toByteArray())
+        .let { bytes ->
+            bytes.fold(StringBuilder(bytes.size * 2)) { str, it ->
+                str.append("%02x".format(it))
+            }
+        }.toString()
 }
