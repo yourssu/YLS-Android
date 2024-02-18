@@ -1,39 +1,79 @@
 package com.yourssu.logging.system
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class LoggingTest {
+
+    class TestLogger : YLS.Logger() {
+        var lastEventData: YLSEventData? = null
+
+        override fun enqueue(eventData: YLSEventData) {
+            lastEventData = eventData
+            super.enqueue(eventData)
+            println("queue size : ${queue.size}")
+        }
+
+        override fun log(eventData: List<YLSEventData>) {
+            println("${eventData.size}개 log!")
+        }
+    }
+
+    lateinit var testLogger: TestLogger
+
+    @Before
+    fun ylsInit() {
+        testLogger = TestLogger()
+        YLS.init(
+            platform = "android",
+            user = "abc",
+            logger = testLogger,
+        )
+    }
 
     @Test
     fun ylsDebugClickLogging() {
-        val logger = YLS.DebugLogger()
-
-        // YLS.log() 전에 init 해줘야 한다
-        YLS.init(
-            platform = "android",
-            serviceName = "Soomsil",
-            user = YLS.randomId(),
-            logger = logger,
-        )
-
         // 버튼 클릭 이벤트
         YLS.log(
             "event" to "ButtonClicked",
             "screen" to "LoginScreen",
         )
-        
-        // 로깅된 값 확인
-        assertEquals(
-            """
-                {"hashedID":"asdf","timestamp":"","event":{"event":"ButtonClicked","screen":"LoginScreen","platform":"android","serviceName":"Soomsil"}}
-            """.trimIndent(),
-            logger.lastlyEventedData,
-        )
+
+        testLogger.lastEventData?.let {
+            assertEquals("abc".hashString(), it.hashedID)
+            assertEquals("android", it.event["platform"])
+            assertEquals("ButtonClicked", it.event["event"])
+            assertEquals("LoginScreen", it.event["screen"])
+        } ?: assertTrue(false) // if null, then fail
+    }
+
+    @Test
+    fun testQueueingLog() {
+        /*
+         * 출력 결과
+         * queue size : 1
+         * queue size : 2
+         * queue size : 3
+         * queue size : 4
+         * queue size : 5
+         * queue size : 6
+         * queue size : 7
+         * queue size : 8
+         * queue size : 9
+         * 10개 log!
+         * queue size : 0
+         * queue size : 1
+         * queue size : 2
+         */
+        repeat(12) {
+            YLS.log("event" to "$it")
+        }
+
+        // 함수 테스트
+        println(YLS.generateRandomId(10))
+        println(YLS.getTimestampISO8601())
+        println(YLS.hashId("abc"))
     }
 }
