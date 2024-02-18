@@ -1,5 +1,7 @@
 package com.yourssu.logging.system
 
+import com.yourssu.logging.system.HashUtil.hashId
+import com.yourssu.logging.system.HashUtil.hashString
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -42,7 +44,7 @@ class LoggingTest {
         )
 
         testLogger.lastEventData?.let {
-            assertEquals("abc".hashString(), it.hashedID)
+            assertEquals(hashString("abc"), it.hashedID)
             assertEquals("android", it.event["platform"])
             assertEquals("ButtonClicked", it.event["event"])
             assertEquals("LoginScreen", it.event["screen"])
@@ -74,6 +76,6 @@ class LoggingTest {
         // 함수 테스트
         println(YLS.generateRandomId(10))
         println(YLS.getTimestampISO8601())
-        println(YLS.hashId("abc"))
+        println(hashId("abc"))
     }
 }

@@ -9,6 +9,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
+import com.yourssu.logging.system.HashUtil.hashId
 import com.yourssu.logging.system.worker.RemoteLoggingWorker
 import java.lang.StringBuilder
 import java.security.MessageDigest
@@ -98,32 +99,8 @@ class YLS private constructor() {
             return (1..length).map { charset.random() }.joinToString("")
         }
 
-        // hashId() 메서드에서만 사용되는 변수
-        private var _id: String? = null
-        private var _hashedId: String? = null
-
-        internal fun hashId(id: String): String {
-            if (_id == id && _hashedId != null) {
-                return _hashedId!!
-            }
-            return id.hashString().also {
-                _id = id
-                _hashedId = it
-            }
-        }
-
         @SuppressLint("SimpleDateFormat")
         internal fun getTimestampISO8601(): String =
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date())
     }
-}
-
-internal fun String.hashString(algorithm: String = "SHA-256"): String {
-    return MessageDigest.getInstance(algorithm)
-        .digest(this.toByteArray())
-        .let { bytes ->
-            bytes.fold(StringBuilder(bytes.size * 2)) { str, it ->
-                str.append("%02x".format(it))
-            }
-        }.toString()
 }
