@@ -38,6 +38,8 @@ afterEvaluate {
         publications {
             create<MavenPublication>("release") {
                 from(components["release"])
+                groupId = "com.yourssu.logging.system"
+                artifactId = "yls-android"
             }
         }
     }
