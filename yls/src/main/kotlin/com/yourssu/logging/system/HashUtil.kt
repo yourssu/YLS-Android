@@ -1,10 +1,14 @@
 package com.yourssu.logging.system
 
-import java.lang.StringBuilder
+import com.yourssu.logging.system.HashUtil._hashedId
+import com.yourssu.logging.system.HashUtil._id
 import java.security.MessageDigest
 
+/**
+ * @property _id for caching
+ * @property _hashedId for caching
+ */
 object HashUtil {
-    // 캐싱
     private var _id: String? = null
     private var _hashedId: String? = null
 

@@ -12,7 +12,29 @@ import com.yourssu.logging.system.worker.RemoteLoggingWorker
 import java.text.SimpleDateFormat
 import java.util.Date
 
+/**
+ * Yourssu Logging System, inspired by [Timber](https://github.com/JakeWharton/timber)
+ *
+ * ```kotlin
+ * // Application의 onCreate()에서 초기화
+ * YLS.init(
+ *      platform = "android",
+ *      user = YLS.generateRandomId(10), // 10자리 랜덤 문자열
+ *      logger = YLS.RemoteLogger() // Logger 객체 지정
+ * )
+ *
+ * // init 때 지정한 Logger 객체를 사용하여 로깅
+ * YLS.log("event" to "click")
+ * ```
+ * @see [com.yourssu.logging.system.LoggingTest]
+ */
 class YLS private constructor() {
+
+    /**
+     * 실질적인 로깅을 수행하는 클래스. [YLS.init]으로 Logger 객체를 등록합니다.
+     *
+     * 기본적으로 10개의 로그 이벤트를 모아두고 한번에 처리하는 로직이 구현되어 있습니다.
+     */
     abstract class Logger {
         protected val queue = ArrayList<YLSEventData>()
 
@@ -36,6 +58,9 @@ class YLS private constructor() {
         protected abstract fun log(eventData: List<YLSEventData>)
     }
 
+    /**
+     * [RemoteLoggingWorker]를 사용하여 백그라운드에서 로그 이벤트를 처리합니다.
+     */
     open class RemoteLogger(private val url: String, context: Context) : Logger() {
 
         protected val worker: WorkManager = WorkManager.getInstance(context)
@@ -74,6 +99,14 @@ class YLS private constructor() {
             this.logger = logger
         }
 
+        /**
+         * 기본적인 로그 메서드입니다.
+         *
+         * @param events 이벤트 key-value 쌍
+         * ```kotlin
+         * YLS.log("event" to "click", "screen" to "mypage")
+         * ```
+         */
         fun log(vararg events: Pair<String, Any>) {
             if (!::logger.isInitialized) {
                 throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
