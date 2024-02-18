@@ -76,10 +76,7 @@ class YLS private constructor() {
 
         fun log(vararg events: Pair<String, Any>) {
             if (!::logger.isInitialized) {
-                throw AssertionError(
-                    "Not initialized! : " +
-                        "YLS.init()을 먼저 호출해 주세요.",
-                )
+                throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
             }
 
             val eventData = YLSEventData(
@@ -92,10 +89,7 @@ class YLS private constructor() {
 
         fun flush() {
             if (!::logger.isInitialized) {
-                throw AssertionError(
-                    "Not initialized! : " +
-                        "YLS.init()을 먼저 호출해 주세요.",
-                )
+                throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
             }
             logger.flush()
         }
