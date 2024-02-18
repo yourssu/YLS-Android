@@ -1,5 +1,7 @@
 package com.yourssu.logging.system
 
+import com.yourssu.logging.system.HashUtil.hashId
+import com.yourssu.logging.system.HashUtil.hashString
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -41,12 +43,15 @@ class LoggingTest {
             "screen" to "LoginScreen",
         )
 
-        testLogger.lastEventData?.let {
-            assertEquals("abc".hashString(), it.hashedID)
-            assertEquals("android", it.event["platform"])
-            assertEquals("ButtonClicked", it.event["event"])
-            assertEquals("LoginScreen", it.event["screen"])
-        } ?: assertTrue(false) // if null, then fail
+        val e = testLogger.lastEventData
+        if (e != null) {
+            assertEquals(hashString("abc"), e.hashedID)
+            assertEquals("android", e.event["platform"])
+            assertEquals("ButtonClicked", e.event["event"])
+            assertEquals("LoginScreen", e.event["screen"])
+        } else {
+            assertTrue(false) // always fail
+        }
     }
 
     @Test
@@ -74,6 +79,6 @@ class LoggingTest {
         // 함수 테스트
         println(YLS.generateRandomId(10))
         println(YLS.getTimestampISO8601())
-        println(YLS.hashId("abc"))
+        println(hashId("abc"))
     }
 }

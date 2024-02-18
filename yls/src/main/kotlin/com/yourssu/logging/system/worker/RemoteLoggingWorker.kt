@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
-import com.yourssu.logging.system.HttpService
 import com.yourssu.logging.system.YLSEventData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

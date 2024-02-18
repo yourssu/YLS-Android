@@ -1,5 +1,6 @@
-package com.yourssu.logging.system
+package com.yourssu.logging.system.worker
 
+import com.yourssu.logging.system.YLSEventData
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.PUT

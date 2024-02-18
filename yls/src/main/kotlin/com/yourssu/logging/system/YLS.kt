@@ -2,19 +2,14 @@ package com.yourssu.logging.system
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.util.Log
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
+import com.yourssu.logging.system.HashUtil.hashId
 import com.yourssu.logging.system.worker.RemoteLoggingWorker
-import java.lang.StringBuilder
-import java.security.MessageDigest
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 import java.util.Date
 
 class YLS private constructor() {
@@ -33,6 +28,7 @@ class YLS private constructor() {
         }
 
         open fun flush() {
+            if (queue.isEmpty()) return
             log(queue)
             queue.clear()
         }
@@ -70,16 +66,18 @@ class YLS private constructor() {
 
         fun init(
             platform: String,
-            user: String?,
+            user: String,
             logger: Logger,
         ) {
             this.defaultEvent = mapOf("platform" to platform)
-            this.userID = user ?: generateRandomId(10)
+            this.userID = user
             this.logger = logger
         }
 
         fun log(vararg events: Pair<String, Any>) {
-            if (!::logger.isInitialized) throw AssertionError("Not Initialized!")
+            if (!::logger.isInitialized) {
+                throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
+            }
 
             val eventData = YLSEventData(
                 hashedID = hashId(userID),
@@ -90,40 +88,19 @@ class YLS private constructor() {
         }
 
         fun flush() {
+            if (!::logger.isInitialized) {
+                throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
+            }
             logger.flush()
         }
 
-        internal fun generateRandomId(length: Int): String {
+        fun generateRandomId(length: Int): String {
             val charset = '!'..'~' // ASCII 33 ~ 126
             return (1..length).map { charset.random() }.joinToString("")
         }
 
-        // hashId() 메서드에서만 사용되는 변수
-        private var _id: String? = null
-        private var _hashedId: String? = null
-
-        internal fun hashId(id: String): String {
-            if (_id == id && _hashedId != null) {
-                return _hashedId!!
-            }
-            return id.hashString().also {
-                _id = id
-                _hashedId = it
-            }
-        }
-
         @SuppressLint("SimpleDateFormat")
-        internal fun getTimestampISO8601(): String =
+        fun getTimestampISO8601(): String =
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date())
     }
-}
-
-internal fun String.hashString(algorithm: String = "SHA-256"): String {
-    return MessageDigest.getInstance(algorithm)
-        .digest(this.toByteArray())
-        .let { bytes ->
-            bytes.fold(StringBuilder(bytes.size * 2)) { str, it ->
-                str.append("%02x".format(it))
-            }
-        }.toString()
 }
