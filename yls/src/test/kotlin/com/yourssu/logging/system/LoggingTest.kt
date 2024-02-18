@@ -43,12 +43,15 @@ class LoggingTest {
             "screen" to "LoginScreen",
         )
 
-        testLogger.lastEventData?.let {
-            assertEquals(hashString("abc"), it.hashedID)
-            assertEquals("android", it.event["platform"])
-            assertEquals("ButtonClicked", it.event["event"])
-            assertEquals("LoginScreen", it.event["screen"])
-        } ?: assertTrue(false) // if null, then fail
+        val e = testLogger.lastEventData
+        if (e != null) {
+            assertEquals(hashString("abc"), e.hashedID)
+            assertEquals("android", e.event["platform"])
+            assertEquals("ButtonClicked", e.event["event"])
+            assertEquals("LoginScreen", e.event["screen"])
+        } else {
+            assertTrue(false) // always fail
+        }
     }
 
     @Test
