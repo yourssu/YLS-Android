@@ -1,7 +1,11 @@
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     `maven-publish`
+    id("org.jetbrains.dokka") version "1.9.10"
 }
 
 android {
@@ -58,4 +62,26 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        named("main") {
+            // used as project name in the header
+            moduleName.set("YLS-Android")
+
+            // adds source links that lead to this repository, allowing readers
+            // to easily find source code for inspected declarations
+            sourceLink {
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl.set(
+                    URL(
+                        "https://github.com/yourssu/YLS-Android/tree/master/" +
+                            "yls/src/main/kotlin/",
+                    ),
+                )
+                remoteLineSuffix.set("#L")
+            }
+        }
+    }
 }
