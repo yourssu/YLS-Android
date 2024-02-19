@@ -1,0 +1,22 @@
+name: release
+
+on:
+    push:
+        branches: [ master ]
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@v4
+
+            -   run: ./gradlew dokkaHtml
+
+            -   name: Deploy docs to website
+                uses: JamesIves/github-pages-deploy-action@releases/v3
+                with:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    BRANCH: gh-page
+                    FOLDER: yls/build/dokka/html/
+                    TARGET_FOLDER: docs/0.x/

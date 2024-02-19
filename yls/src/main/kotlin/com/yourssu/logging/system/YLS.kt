@@ -31,7 +31,7 @@ import java.util.Date
 class YLS private constructor() {
 
     /**
-     * 실질적인 로깅을 수행하는 클래스. [YLS.init]으로 Logger 객체를 등록합니다.
+     * 실질적인 로깅을 수행하는 클래스. [YLS.init]으로 Logger 객체를 등록할 수 있습니다.
      *
      * 기본적으로 10개의 로그 이벤트를 모아두고 한번에 처리하는 로직이 구현되어 있습니다.
      */
@@ -59,6 +59,8 @@ class YLS private constructor() {
     }
 
     /**
+     * 설정된 url로 로그 데이터를
+     *
      * [RemoteLoggingWorker]를 사용하여 백그라운드에서 로그 이벤트를 처리합니다.
      */
     open class RemoteLogger(private val url: String, context: Context) : Logger() {
@@ -102,10 +104,10 @@ class YLS private constructor() {
         /**
          * 기본적인 로그 메서드입니다.
          *
-         * @param events 이벤트 key-value 쌍
          * ```kotlin
          * YLS.log("event" to "click", "screen" to "mypage")
          * ```
+         * @param events 이벤트 key-value 쌍
          */
         fun log(vararg events: Pair<String, Any>) {
             if (!::logger.isInitialized) {
