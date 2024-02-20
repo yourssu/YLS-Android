@@ -10,7 +10,7 @@ import androidx.work.impl.utils.SynchronousExecutor
 import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
 import androidx.work.workDataOf
-import com.yourssu.logging.system.worker.RemoteLoggingWorker
+import com.yourssu.logging.system.remote.RemoteLoggingWorker
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

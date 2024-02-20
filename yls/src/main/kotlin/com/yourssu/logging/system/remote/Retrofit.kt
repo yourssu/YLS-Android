@@ -1,4 +1,4 @@
-package com.yourssu.logging.system.worker
+package com.yourssu.logging.system.remote
 
 import com.yourssu.logging.system.YLSEventData
 import retrofit2.Response

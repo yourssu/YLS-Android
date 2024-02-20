@@ -8,7 +8,7 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
 import com.yourssu.logging.system.HashUtil.hashId
-import com.yourssu.logging.system.worker.RemoteLoggingWorker
+import com.yourssu.logging.system.remote.RemoteLoggingWorker
 import java.text.SimpleDateFormat
 import java.util.Date
 
