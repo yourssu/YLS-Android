@@ -1,4 +1,4 @@
-package com.yourssu.logging.system.worker
+package com.yourssu.logging.system.remote
 
 import android.content.Context
 import androidx.work.CoroutineWorker

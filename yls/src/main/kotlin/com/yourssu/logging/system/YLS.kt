@@ -8,7 +8,7 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
 import com.yourssu.logging.system.HashUtil.hashId
-import com.yourssu.logging.system.worker.RemoteLoggingWorker
+import com.yourssu.logging.system.remote.RemoteLoggingWorker
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -94,10 +94,10 @@ class YLS private constructor() {
     companion object {
         private lateinit var logger: Logger
         private lateinit var defaultEvent: Map<String, Any>
-        private lateinit var userID: String
+        private lateinit var userId: String
 
         /**
-         * 최초 YLS 초기화. 앱의 Application.onCreate()에서 초기화하는 것을 권장합니다.
+         * YLS 초기화. 앱의 Application.onCreate()에서 초기화하는 것을 권장합니다.
          *
          * @param platform 플랫폼 이름
          * @param user 유저 ID. 비로그인 상태라면 [YLS.generateRandomId]로 임시 ID 생성 권장
@@ -109,7 +109,19 @@ class YLS private constructor() {
             logger: Logger,
         ) {
             this.defaultEvent = mapOf("platform" to platform)
-            this.userID = user
+            this.userId = user
+            this.logger = logger
+        }
+        
+        fun setUserId(id: String) {
+            this.userId = id
+        }
+
+        fun setDefaultEvent(eventMap: Map<String, Any>) {
+            this.defaultEvent = eventMap
+        }
+
+        fun setLogger(logger: Logger) {
             this.logger = logger
         }
 
@@ -127,7 +139,7 @@ class YLS private constructor() {
             }
 
             val eventData = YLSEventData(
-                hashedID = hashId(userID),
+                hashedID = hashId(userId),
                 timestamp = getTimestampISO8601(),
                 event = defaultEvent + events.toMap(),
             )
