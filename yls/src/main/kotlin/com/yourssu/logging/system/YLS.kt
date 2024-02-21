@@ -139,7 +139,7 @@ class YLS private constructor() {
             }
 
             val eventData = YLSEventData(
-                hashedID = hashId(userId),
+                hashedId = hashId(userId),
                 timestamp = getTimestampISO8601(),
                 version = BuildConfig.VERSION_NAME.split(".")[0].toIntOrNull() ?: -1, // YLS 버전 불러옴
                 event = defaultEvent + events.toMap(),

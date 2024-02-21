@@ -45,7 +45,7 @@ class LoggingTest {
 
         val e = testLogger.lastEventData
         if (e != null) {
-            assertEquals(hashString("abc"), e.hashedID)
+            assertEquals(hashString("abc"), e.hashedId)
             assertEquals("android", e.event["platform"])
             assertEquals("ButtonClicked", e.event["event"])
             assertEquals("LoginScreen", e.event["screen"])
