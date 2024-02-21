@@ -7,8 +7,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
-import com.yourssu.logging.system.HashUtil.hashId
 import com.yourssu.logging.system.remote.RemoteLoggingWorker
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -94,27 +94,27 @@ class YLS private constructor() {
     companion object {
         private lateinit var logger: Logger
         private lateinit var defaultEvent: Map<String, Any>
-        private lateinit var userId: String
+        private lateinit var hashedUserId: String
 
         /**
          * YLS 초기화. 앱의 Application.onCreate()에서 초기화하는 것을 권장합니다.
          *
          * @param platform 플랫폼 이름
-         * @param user 유저 ID. 비로그인 상태라면 [YLS.generateRandomId]로 임시 ID 생성 권장
+         * @param userId 유저 ID. 비로그인 상태라면 [YLS.generateRandomId]로 임시 ID 생성 권장
          * @param logger 실질적인 로깅 객체. [YLS.Logger]의 서브 타입
          */
         fun init(
             platform: String,
-            user: String,
+            userId: String,
             logger: Logger,
         ) {
             this.defaultEvent = mapOf("platform" to platform)
-            this.userId = user
+            this.hashedUserId = hashString(userId)
             this.logger = logger
         }
 
-        fun setUserId(id: String) {
-            this.userId = id
+        fun setUserId(userId: String) {
+            this.hashedUserId = hashString(userId)
         }
 
         fun setDefaultEvent(eventMap: Map<String, Any>) {
@@ -139,7 +139,7 @@ class YLS private constructor() {
             }
 
             val eventData = YLSEventData(
-                hashedId = hashId(userId),
+                hashedId = hashedUserId,
                 timestamp = getTimestampISO8601(),
                 version = BuildConfig.VERSION_NAME.split(".")[0].toIntOrNull() ?: -1, // YLS 버전 불러옴
                 event = defaultEvent + events.toMap(),
@@ -173,5 +173,16 @@ class YLS private constructor() {
         @SuppressLint("SimpleDateFormat")
         fun getTimestampISO8601(): String =
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date())
+
+        /** SHA-256 알고리즘으로 `origin`을 암호화 한 문자열을 반환합니다. */
+        fun hashString(origin: String, algorithm: String = "SHA-256"): String {
+            return MessageDigest.getInstance(algorithm)
+                .digest(origin.toByteArray())
+                .let { bytes ->
+                    bytes.fold(StringBuilder(bytes.size * 2)) { str, it ->
+                        str.append("%02x".format(it))
+                    }
+                }.toString()
+        }
     }
 }
