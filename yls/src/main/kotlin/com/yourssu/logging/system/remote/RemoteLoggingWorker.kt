@@ -27,24 +27,52 @@ internal class RemoteLoggingWorker(
     }
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        inputData.getString(KEY_LOGGING_DATA_LIST)?.let { json ->
-            val eventDataList = Gson().fromJson<List<YLSEventData>>(
-                json,
-                object : TypeToken<List<YLSEventData>>() {}.type,
-            )
-            val response = service?.putLog(eventDataList[0].toLoggingRequest()) ?: return@let Result.failure()
+        val eventDataJson = inputData.getString(KEY_LOGGING_SINGLE_DATA)
+        val eventDataListJson = inputData.getString(KEY_LOGGING_DATA_LIST)
 
-            // 코드에 따른 상세한 처리 필요
-            if (response.code() in 200..299) {
-                Result.success()
-            } else {
-                Result.failure()
+        when {
+            service == null -> Result.failure()
+
+            eventDataJson != null -> {
+                println(eventDataJson)
+                println(eventDataListJson)
+                val eventData = Gson().fromJson(eventDataJson, YLSEventData::class.java)
+                val response = service!!.putLog(eventData.toLoggingRequest())
+
+                // 코드에 따른 상세한 처리 필요
+                if (response.code() in 200..299 && response.body()?.success == true) {
+                    Result.success()
+                } else {
+                    Result.failure()
+                }
             }
-        } ?: Result.failure()
+
+            eventDataListJson != null -> {
+                println(eventDataJson)
+                println(eventDataListJson)
+                val eventDataList = Gson().fromJson<List<YLSEventData>>(
+                    eventDataListJson,
+                    object : TypeToken<List<YLSEventData>>() {}.type,
+                )
+                val response = service!!.putLogList(eventDataList.toLogListRequest())
+
+                println(response.code())
+                println(response.body())
+                // 코드에 따른 상세한 처리 필요
+                if (response.code() in 200..299 && response.body()?.success == true) {
+                    Result.success()
+                } else {
+                    Result.failure()
+                }
+            }
+
+            else -> Result.failure()
+        }
     }
 
     companion object {
         const val KEY_LOGGING_DATA_LIST = "logging-data-list-json"
+        const val KEY_LOGGING_SINGLE_DATA = "loggingk-single-data-json"
         const val KEY_LOGGING_URL = "logging-url"
     }
 }
