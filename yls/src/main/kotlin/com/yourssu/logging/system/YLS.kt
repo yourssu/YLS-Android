@@ -76,7 +76,7 @@ class YLS private constructor() {
             val request = OneTimeWorkRequestBuilder<RemoteLoggingWorker>()
                 .setInputData(
                     workDataOf(
-                        RemoteLoggingWorker.KEY_LOGGING_DATA to json,
+                        RemoteLoggingWorker.KEY_LOGGING_DATA_LIST to json,
                         RemoteLoggingWorker.KEY_LOGGING_URL to url,
                     ),
                 ).build()

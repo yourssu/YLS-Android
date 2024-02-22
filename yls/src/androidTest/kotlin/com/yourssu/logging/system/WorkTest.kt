@@ -63,7 +63,7 @@ class WorkTest {
             context = context,
             inputData = workDataOf(
                 RemoteLoggingWorker.KEY_LOGGING_URL to "url",
-                RemoteLoggingWorker.KEY_LOGGING_DATA to json,
+                RemoteLoggingWorker.KEY_LOGGING_DATA_LIST to json,
             ),
         ).build()
 
