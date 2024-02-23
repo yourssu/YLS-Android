@@ -4,6 +4,8 @@ import com.yourssu.logging.system.remote.LoggingService
 import com.yourssu.logging.system.remote.toLogListRequest
 import com.yourssu.logging.system.remote.toLoggingRequest
 import kotlinx.coroutines.runBlocking
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.assertTrue
@@ -24,10 +26,15 @@ class ApiTest {
         server = MockWebServer()
         server.start()
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY) })
+            .build()
+
         retrofit = Retrofit.Builder()
             .baseUrl("http://52.78.169.59:8085/")    // 실제 Api 테스트
 //            .baseUrl(server.url("/"))         // 가짜 Response 테스트
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
 
         loggingService = retrofit.create(LoggingService::class.java)
@@ -61,9 +68,6 @@ class ApiTest {
         )
         runBlocking {
             val response = loggingService.putLogList(eventDataList.toLogListRequest())
-            println(response.code())
-            println(response.message())
-            println(response.isSuccessful)
             assertTrue(response.body()!!.success) // Fail: body is null
         }
     }
