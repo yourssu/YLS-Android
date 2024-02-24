@@ -95,6 +95,8 @@ class YLS private constructor() {
     }
 
     companion object {
+        internal val VERSION = 1
+
         private lateinit var logger: Logger
         private lateinit var defaultEvent: Map<String, Any>
         private lateinit var hashedUserId: String
@@ -136,7 +138,7 @@ class YLS private constructor() {
          * ```
          * @param events 이벤트 key-value 쌍
          */
-        fun log(vararg events: Pair<String, Any>) {
+        fun log(version: Int = VERSION, vararg events: Pair<String, Any>) {
             if (!::logger.isInitialized) {
                 throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
             }
@@ -144,7 +146,7 @@ class YLS private constructor() {
             val eventData = YLSEventData(
                 hashedId = hashedUserId,
                 timestamp = getTimestampISO8601(),
-                version = BuildConfig.VERSION_NAME.split(".")[0].toIntOrNull() ?: -1, // YLS 버전 불러옴
+                version = version,
                 event = defaultEvent + events.toMap(),
             )
             logger.enqueue(eventData)
