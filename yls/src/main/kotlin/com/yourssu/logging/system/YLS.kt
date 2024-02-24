@@ -7,8 +7,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
-import com.yourssu.logging.system.HashUtil.hashId
 import com.yourssu.logging.system.remote.RemoteLoggingWorker
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -26,6 +26,9 @@ import java.util.Date
  *
  * // init 때 지정한 Logger 객체를 사용하여 로깅
  * YLS.log("event" to "click")
+ *
+ * // 유틸 함수 사용
+ * logEvent("click")
  * ```
  * @see [com.yourssu.logging.system.LoggingTest]
  */
@@ -76,7 +79,7 @@ class YLS private constructor() {
             val request = OneTimeWorkRequestBuilder<RemoteLoggingWorker>()
                 .setInputData(
                     workDataOf(
-                        RemoteLoggingWorker.KEY_LOGGING_DATA to json,
+                        RemoteLoggingWorker.KEY_LOGGING_DATA_LIST to json,
                         RemoteLoggingWorker.KEY_LOGGING_URL to url,
                     ),
                 ).build()
@@ -92,29 +95,31 @@ class YLS private constructor() {
     }
 
     companion object {
+        internal val VERSION = 1
+
         private lateinit var logger: Logger
         private lateinit var defaultEvent: Map<String, Any>
-        private lateinit var userId: String
+        private lateinit var hashedUserId: String
 
         /**
          * YLS 초기화. 앱의 Application.onCreate()에서 초기화하는 것을 권장합니다.
          *
          * @param platform 플랫폼 이름
-         * @param user 유저 ID. 비로그인 상태라면 [YLS.generateRandomId]로 임시 ID 생성 권장
+         * @param userId 유저 ID. 비로그인 상태라면 [YLS.generateRandomId]로 임시 ID 생성 권장
          * @param logger 실질적인 로깅 객체. [YLS.Logger]의 서브 타입
          */
         fun init(
             platform: String,
-            user: String,
+            userId: String,
             logger: Logger,
         ) {
             this.defaultEvent = mapOf("platform" to platform)
-            this.userId = user
+            this.hashedUserId = hashString(userId)
             this.logger = logger
         }
 
-        fun setUserId(id: String) {
-            this.userId = id
+        fun setUserId(userId: String) {
+            this.hashedUserId = hashString(userId)
         }
 
         fun setDefaultEvent(eventMap: Map<String, Any>) {
@@ -133,15 +138,15 @@ class YLS private constructor() {
          * ```
          * @param events 이벤트 key-value 쌍
          */
-        fun log(vararg events: Pair<String, Any>) {
+        fun log(version: Int = VERSION, vararg events: Pair<String, Any>) {
             if (!::logger.isInitialized) {
                 throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
             }
 
             val eventData = YLSEventData(
-                hashedID = hashId(userId),
+                hashedId = hashedUserId,
                 timestamp = getTimestampISO8601(),
-                version = BuildConfig.VERSION_NAME.split(".")[0].toIntOrNull() ?: -1, // YLS 버전 불러옴
+                version = version,
                 event = defaultEvent + events.toMap(),
             )
             logger.enqueue(eventData)
@@ -173,5 +178,16 @@ class YLS private constructor() {
         @SuppressLint("SimpleDateFormat")
         fun getTimestampISO8601(): String =
             SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date())
+
+        /** SHA-256 알고리즘으로 `origin`을 암호화 한 문자열을 반환합니다. */
+        fun hashString(origin: String, algorithm: String = "SHA-256"): String {
+            return MessageDigest.getInstance(algorithm)
+                .digest(origin.toByteArray())
+                .let { bytes ->
+                    bytes.fold(StringBuilder(bytes.size * 2)) { str, it ->
+                        str.append("%02x".format(it))
+                    }
+                }.toString()
+        }
     }
 }
