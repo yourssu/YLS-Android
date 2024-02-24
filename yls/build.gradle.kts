@@ -1,5 +1,11 @@
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.konan.properties.Properties
+import java.io.FileInputStream
 import java.net.URL
+
+val versionProperties = Properties().apply {
+    load(FileInputStream(rootProject.file("version.properties")))
+}
 
 plugins {
     id("com.android.library")
@@ -17,6 +23,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "VERSION_NAME", "\"${versionProperties["versionName"]}\"")
     }
 
     buildTypes {
@@ -35,6 +43,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 afterEvaluate {
@@ -44,6 +55,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.yourssu.logging.system"
                 artifactId = "yls-android"
+                version = versionProperties["versionName"].toString()
             }
         }
     }
