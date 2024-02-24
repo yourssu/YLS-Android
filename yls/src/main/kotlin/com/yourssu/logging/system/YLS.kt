@@ -26,6 +26,9 @@ import java.util.Date
  *
  * // init 때 지정한 Logger 객체를 사용하여 로깅
  * YLS.log("event" to "click")
+ *
+ * // 유틸 함수 사용
+ * logEvent("click")
  * ```
  * @see [com.yourssu.logging.system.LoggingTest]
  */
