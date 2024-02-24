@@ -23,8 +23,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
-        buildConfigField("String", "VERSION_NAME", "\"${versionProperties["versionName"]}\"")
     }
 
     buildTypes {
@@ -42,9 +40,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
-    }
-    buildFeatures {
-        buildConfig = true
     }
 }
 
