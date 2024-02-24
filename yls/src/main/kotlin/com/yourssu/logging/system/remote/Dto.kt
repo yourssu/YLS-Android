@@ -28,12 +28,14 @@ data class LoggingResponse(
 )
 
 fun List<YLSEventData>.toLogListRequest(): LogListRequest {
-    return LogListRequest(eventList = this)
+    return LogListRequest(
+        eventList = this.map { it.toLoggingRequest() },
+    )
 }
 
 data class LogListRequest(
     @SerializedName("logRequestList")
-    val eventList: List<YLSEventData>,
+    val eventList: List<LoggingRequest>,
 )
 
 data class LogListResponse(
