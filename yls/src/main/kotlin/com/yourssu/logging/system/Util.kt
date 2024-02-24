@@ -1,6 +1,4 @@
-package com.yourssu.logging.system.util
-
-import com.yourssu.logging.system.YLS
+package com.yourssu.logging.system
 
 fun logEvent(eventName: String, vararg extra: Pair<String, Any>) {
     YLS.log("event" to eventName, *extra)
