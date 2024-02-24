@@ -30,17 +30,14 @@ internal class RemoteLoggingWorker(
         val eventDataJson = inputData.getString(KEY_LOGGING_SINGLE_DATA)
         val eventDataListJson = inputData.getString(KEY_LOGGING_DATA_LIST)
 
-        when {
+        return@withContext when {
             service == null -> Result.failure()
 
             eventDataJson != null -> {
-                println(eventDataJson)
-                println(eventDataListJson)
                 val eventData = Gson().fromJson(eventDataJson, YLSEventData::class.java)
                 val response = service!!.putLog(eventData.toLoggingRequest())
 
-                // 코드에 따른 상세한 처리 필요
-                if (response.code() in 200..299 && response.body()?.success == true) {
+                if (response.isSuccessful && response.body()?.success == true) {
                     Result.success()
                 } else {
                     Result.failure()
@@ -48,18 +45,13 @@ internal class RemoteLoggingWorker(
             }
 
             eventDataListJson != null -> {
-                println(eventDataJson)
-                println(eventDataListJson)
                 val eventDataList = Gson().fromJson<List<YLSEventData>>(
                     eventDataListJson,
                     object : TypeToken<List<YLSEventData>>() {}.type,
                 )
                 val response = service!!.putLogList(eventDataList.toLogListRequest())
 
-                println(response.code())
-                println(response.body())
-                // 코드에 따른 상세한 처리 필요
-                if (response.code() in 200..299 && response.body()?.success == true) {
+                if (response.isSuccessful && response.body()?.success == true) {
                     Result.success()
                 } else {
                     Result.failure()
