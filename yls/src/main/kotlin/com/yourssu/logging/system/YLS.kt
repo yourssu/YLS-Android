@@ -94,8 +94,12 @@ class YLS private constructor() {
         }
     }
 
-    companion object {
-        internal val VERSION = 1
+    companion object Facade : Logger() {
+        private const val DEFAULT_VERSION = 1
+        private var version: Int = DEFAULT_VERSION
+            get() {
+                return field.also { field = DEFAULT_VERSION }
+            }
 
         private lateinit var logger: Logger
         private lateinit var defaultEvent: Map<String, Any>
@@ -131,6 +135,28 @@ class YLS private constructor() {
         }
 
         /**
+         * 로깅 될 로그 데이터의 버전을 설정합니다.
+         * 한 번 [createLog] 메서드가 호출되면 [DEFAULT_VERSION]으로 초기화 됩니다.
+         *
+         * ```kotlin
+         * YLS.version(2).log(...)
+         * ```
+         */
+        fun version(version: Int): YLS.Facade {
+            this.version = version
+            return this
+        }
+
+        fun createLog(eventMap: Map<String, Any>): YLSEventData {
+            return YLSEventData(
+                hashedId = hashedUserId,
+                timestamp = getTimestamp(),
+                version = this.version,
+                event = defaultEvent + eventMap,
+            )
+        }
+
+        /**
          * 기본적인 로그 메서드입니다.
          *
          * ```kotlin
@@ -138,26 +164,29 @@ class YLS private constructor() {
          * ```
          * @param events 이벤트 key-value 쌍
          */
-        fun log(version: Int = VERSION, vararg events: Pair<String, Any>) {
+        fun log(vararg events: Pair<String, Any>) {
             if (!::logger.isInitialized) {
                 throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
             }
 
-            val eventData = YLSEventData(
-                hashedId = hashedUserId,
-                timestamp = getTimestamp(),
-                version = version,
-                event = defaultEvent + events.toMap(),
-            )
+            val eventData = createLog(events.toMap())
+            log(eventData)
+        }
+
+        fun log(eventData: YLSEventData) {
             logger.enqueue(eventData)
         }
 
         /** Logger에 남아있는 로그 데이터를 모두 내보낸 후 큐를 비웁니다. */
-        fun flush() {
+        override fun flush() {
             if (!::logger.isInitialized) {
                 throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
             }
             logger.flush()
+        }
+
+        override fun log(eventData: List<YLSEventData>) {
+            throw AssertionError("This method is not available!")
         }
 
         /**
