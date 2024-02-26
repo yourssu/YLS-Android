@@ -1,53 +1,46 @@
 package com.yourssu.logging.system
 
-fun logEvent(
+fun YLS.Facade.logEvent(
     eventName: String,
-    version: Int = YLS.VERSION,
     vararg extra: Pair<String, Any>,
 ) {
-    YLS.log(version, "event" to eventName, *extra)
+    YLS.log("event" to eventName, *extra)
 }
 
-fun logAppInitEvent(
-    version: Int = YLS.VERSION,
-    vararg extra: Pair<String, Any>,
-) {
-    logEvent("AppInitialEntry", version, *extra)
+fun YLS.Facade.logAppInit(vararg extra: Pair<String, Any>) {
+    logEvent("AppInitialEntry", *extra)
 }
 
-fun logDeepLinkEntry(
+fun YLS.Facade.logDeepLinkEntry(
     screenName: String,
-    version: Int = YLS.VERSION,
     vararg extra: Pair<String, Any>,
 ) {
-    logEvent("DeepLinkEntry", version, "screen" to screenName, *extra)
+    logEvent("DeepLinkEntry", "screen" to screenName, *extra)
 }
 
-fun logScreenEntry(
+fun YLS.Facade.logScreenEntry(
     screenName: String,
-    version: Int = YLS.VERSION,
     vararg extra: Pair<String, Any>,
 ) {
-    logEvent("ScreenEntry", version, "screen" to screenName, *extra)
+    logEvent("ScreenEntry", "screen" to screenName, *extra)
 }
 
-fun logScreenExit(
+fun YLS.Facade.logScreenExit(
     screenName: String,
-    version: Int = YLS.VERSION,
     vararg extra: Pair<String, Any>,
 ) {
-    logEvent("ScreenExit", version, "screen" to screenName, *extra)
+    logEvent("ScreenExit", "screen" to screenName, *extra)
+    flush()
 }
 
 /**
  * @param componentName 클릭한 요소의 이름
  * @param screenName 클릭한 시점의 화면의 이름
  */
-fun logClick(
+fun YLS.Facade.logClick(
     componentName: String,
     screenName: String,
-    version: Int = YLS.VERSION,
     vararg extra: Pair<String, Any>,
 ) {
-    logEvent("${componentName}Clicked", version, "screen" to screenName, *extra)
+    logEvent("${componentName}Clicked", "screen" to screenName, *extra)
 }
