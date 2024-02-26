@@ -29,6 +29,11 @@ $dokka.location:com.yourssu.logging.system//logDeepLinkEntry/com.yourssu.logging
 $dokka.location:com.yourssu.logging.system//logEvent/com.yourssu.logging.system.YLS.Facade#kotlin.String#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-event.html
 $dokka.location:com.yourssu.logging.system//logScreenEntry/com.yourssu.logging.system.YLS.Facade#kotlin.String#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-screen-entry.html
 $dokka.location:com.yourssu.logging.system//logScreenExit/com.yourssu.logging.system.YLS.Facade#kotlin.String#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-screen-exit.html
+$dokka.location:com.yourssu.logging.system//toParams/kotlin.Pair[kotlin.String,kotlin.Any]#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/to-params.html
+$dokka.location:com.yourssu.logging.system//toParams/kotlin.collections.Map[kotlin.String,kotlin.Any]#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/to-params.html
+$dokka.location:com.yourssu.logging.system/Params///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-params/index.html
+$dokka.location:com.yourssu.logging.system/Params/Params/#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-params/-params.html
+$dokka.location:com.yourssu.logging.system/Params/Params/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-params/-params.html
 $dokka.location:com.yourssu.logging.system/YLS.DebugLogger///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-debug-logger/index.html
 $dokka.location:com.yourssu.logging.system/YLS.DebugLogger/DebugLogger/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-debug-logger/-debug-logger.html
 $dokka.location:com.yourssu.logging.system/YLS.Facade///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/index.html
@@ -40,6 +45,7 @@ $dokka.location:com.yourssu.logging.system/YLS.Facade/hashString/#kotlin.String#
 $dokka.location:com.yourssu.logging.system/YLS.Facade/init/#kotlin.String#kotlin.String#com.yourssu.logging.system.YLS.Logger/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/init.html
 $dokka.location:com.yourssu.logging.system/YLS.Facade/log/#com.yourssu.logging.system.YLSEventData/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/log.html
 $dokka.location:com.yourssu.logging.system/YLS.Facade/log/#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/log.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/params/#com.yourssu.logging.system.Params/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/params.html
 $dokka.location:com.yourssu.logging.system/YLS.Facade/setDefaultEvent/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/set-default-event.html
 $dokka.location:com.yourssu.logging.system/YLS.Facade/setLogger/#com.yourssu.logging.system.YLS.Logger/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/set-logger.html
 $dokka.location:com.yourssu.logging.system/YLS.Facade/setUserId/#kotlin.String/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/set-user-id.html
