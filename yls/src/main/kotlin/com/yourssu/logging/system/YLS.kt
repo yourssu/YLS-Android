@@ -102,8 +102,8 @@ class YLS private constructor() {
             }
 
         private lateinit var logger: Logger
-        private lateinit var defaultEvent: Map<String, Any>
         private lateinit var hashedUserId: String
+        private var defaultEvent: Map<String, Any> = mapOf()
 
         /**
          * YLS 초기화. 앱의 Application.onCreate()에서 초기화하는 것을 권장합니다.
@@ -148,6 +148,12 @@ class YLS private constructor() {
         }
 
         fun createLog(eventMap: Map<String, Any>): YLSEventData {
+            if (!::hashedUserId.isInitialized) {
+                throw AssertionError(
+                    "Not initialized! : userId가 초기화되지 않았습니다.\n" +
+                        "YLS.setUserId() 또는 YLS.init()을 먼저 호출해주세요.",
+                )
+            }
             return YLSEventData(
                 hashedId = hashedUserId,
                 timestamp = getTimestamp(),
@@ -165,22 +171,27 @@ class YLS private constructor() {
          * @param events 이벤트 key-value 쌍
          */
         fun log(vararg events: Pair<String, Any>) {
-            if (!::logger.isInitialized) {
-                throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
-            }
-
             val eventData = createLog(events.toMap())
             log(eventData)
         }
 
         fun log(eventData: YLSEventData) {
+            if (!::logger.isInitialized) {
+                throw AssertionError(
+                    "Not initialized! : logger가 초기화되지 않았습니다.\n" +
+                        "YLS.setLogger() 또는 YLS.init()을 먼저 호출해 주세요.",
+                )
+            }
             logger.enqueue(eventData)
         }
 
         /** Logger에 남아있는 로그 데이터를 모두 내보낸 후 큐를 비웁니다. */
         override fun flush() {
             if (!::logger.isInitialized) {
-                throw AssertionError("Not initialized! : YLS.init()을 먼저 호출해 주세요.")
+                throw AssertionError(
+                    "Not initialized! : logger가 초기화되지 않았습니다.\n" +
+                        "YLS.setLogger() 또는 YLS.init()을 먼저 호출해 주세요.",
+                )
             }
             logger.flush()
         }
