@@ -1,8 +1,7 @@
 name: Deploy
 
-on:
-    push:
-        branches: [ master, develop ]
+# Github에서 수동으로 실행해야 합니다.
+on: workflow_dispatch
 
 jobs:
     deploy-docs:
