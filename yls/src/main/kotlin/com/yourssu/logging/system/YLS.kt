@@ -97,13 +97,14 @@ class YLS private constructor() {
     companion object Facade : Logger() {
         internal const val DEFAULT_VERSION = 1
         private var version: Int = DEFAULT_VERSION
-            get() {
-                return field.also { field = DEFAULT_VERSION }
-            }
+            get() = field.also { field = DEFAULT_VERSION }
 
         private lateinit var logger: Logger
         private lateinit var hashedUserId: String
-        private var defaultEvent: Map<String, Any> = mapOf()
+        private var defaultEvent: Map<String, Any> = emptyMap()
+
+        private var params: Params? = null
+            get() = field.also { field = null }
 
         /**
          * YLS 초기화. 앱의 Application.onCreate()에서 초기화하는 것을 권장합니다.
@@ -147,6 +148,11 @@ class YLS private constructor() {
             return this
         }
 
+        fun params(params: Params): YLS.Facade {
+            this.params = params
+            return this
+        }
+
         fun createLog(eventMap: Map<String, Any>): YLSEventData {
             if (!::hashedUserId.isInitialized) {
                 throw AssertionError(
@@ -154,11 +160,14 @@ class YLS private constructor() {
                         "YLS.setUserId() 또는 YLS.init()을 먼저 호출해주세요.",
                 )
             }
+            val maybeParams = this.params.let {
+                if (it == null) emptyMap() else mapOf("params" to it.value)
+            }
             return YLSEventData(
                 hashedId = hashedUserId,
                 timestamp = getTimestamp(),
                 version = this.version,
-                event = defaultEvent + eventMap,
+                event = defaultEvent + eventMap + maybeParams,
             )
         }
 
