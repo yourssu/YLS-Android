@@ -36,20 +36,27 @@ class LoggingTest {
     @Test
     fun ylsDebugClickLogging() {
         // 버튼 클릭 이벤트
-        YLS.log(
-            "event" to "ButtonClicked",
-            "screen" to "LoginScreen",
-        )
+        YLS.version(123)
+            .params(Params("likeCount" to 10))
+            .log("screen" to "LoginScreen")
 
         val e = testLogger.lastEventData
         if (e != null) {
             assertEquals(YLS.hashString("abc"), e.hashedId)
             assertEquals("android", e.event["platform"])
-            assertEquals("ButtonClicked", e.event["event"])
             assertEquals("LoginScreen", e.event["screen"])
+            assertEquals(123, e.version)
+            assertEquals(mapOf("likeCount" to 10), e.event["params"])
         } else {
             assertTrue(false) // always fail
         }
+
+        // 설정한 버전과 params는 설정할 때 한 번만 들어가고
+        // 각각 DEFAULT_VERSION과 null로 초기화된다.
+        YLS.log()
+        val e2 = testLogger.lastEventData
+        assertEquals(YLS.DEFAULT_VERSION, e2!!.version)
+        assertEquals(null, e2.event["params"])
     }
 
     @Test
