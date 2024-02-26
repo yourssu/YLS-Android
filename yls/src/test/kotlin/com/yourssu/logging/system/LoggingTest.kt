@@ -36,7 +36,7 @@ class LoggingTest {
     @Test
     fun ylsDebugClickLogging() {
         // 버튼 클릭 이벤트
-        YLS.log(
+        YLS.version(123).log(
             "event" to "ButtonClicked",
             "screen" to "LoginScreen",
         )
@@ -47,9 +47,15 @@ class LoggingTest {
             assertEquals("android", e.event["platform"])
             assertEquals("ButtonClicked", e.event["event"])
             assertEquals("LoginScreen", e.event["screen"])
+            assertEquals(123, e.version)
         } else {
             assertTrue(false) // always fail
         }
+
+        // 이후 로깅한 버전은 DEFAULT_VERSION으로 들어간다
+        YLS.log()
+        val e2 = testLogger.lastEventData
+        assertEquals(YLS.DEFAULT_VERSION, e2!!.version)
     }
 
     @Test
