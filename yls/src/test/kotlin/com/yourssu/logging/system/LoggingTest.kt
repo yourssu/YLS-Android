@@ -37,6 +37,7 @@ class LoggingTest {
     fun ylsDebugClickLogging() {
         // 버튼 클릭 이벤트
         YLS.log(
+            version = 1,
             "event" to "ButtonClicked",
             "screen" to "LoginScreen",
         )
@@ -71,12 +72,12 @@ class LoggingTest {
          * queue size : 2
          */
         repeat(12) {
-            YLS.log("event" to "$it")
+//            YLS.log("event" to "$it")
         }
 
         // 함수 테스트
         println(YLS.generateRandomId(10))
-        println(YLS.getTimestampISO8601())
+        println(YLS.getTimestamp())
         println(YLS.hashString("abc"))
     }
 }

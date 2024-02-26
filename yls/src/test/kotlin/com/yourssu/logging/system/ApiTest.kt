@@ -47,6 +47,7 @@ class ApiTest {
         val eventData = YLSEventData(
             hashedId = "testtest",
             timestamp = "2023-12-04T10:30:00Z",
+            version = 1,
             event = mapOf("event" to "test"),
         )
         runBlocking {
@@ -63,6 +64,7 @@ class ApiTest {
             YLSEventData(
                 hashedId = "testtest",
                 timestamp = "2023-12-04T10:30:00Z",
+                version = 1,
                 event = mapOf("event" to "test"),
             ),
         )

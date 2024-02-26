@@ -1,6 +1,5 @@
 package com.yourssu.logging.system
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.work.OneTimeWorkRequestBuilder
@@ -9,8 +8,9 @@ import androidx.work.workDataOf
 import com.google.gson.Gson
 import com.yourssu.logging.system.remote.RemoteLoggingWorker
 import java.security.MessageDigest
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 /**
  * Yourssu Logging System, inspired by [Timber](https://github.com/JakeWharton/timber)
@@ -145,7 +145,7 @@ class YLS private constructor() {
 
             val eventData = YLSEventData(
                 hashedId = hashedUserId,
-                timestamp = getTimestampISO8601(),
+                timestamp = getTimestamp(),
                 version = version,
                 event = defaultEvent + events.toMap(),
             )
@@ -175,9 +175,10 @@ class YLS private constructor() {
          *
          * @return ISO 8601 format string of current
          */
-        @SuppressLint("SimpleDateFormat")
-        fun getTimestampISO8601(): String =
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date())
+        fun getTimestamp(): String {
+            return OffsetDateTime.now(ZoneOffset.UTC)
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
+        }
 
         /** SHA-256 알고리즘으로 `origin`을 암호화 한 문자열을 반환합니다. */
         fun hashString(origin: String, algorithm: String = "SHA-256"): String {
