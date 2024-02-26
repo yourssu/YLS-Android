@@ -95,7 +95,7 @@ class YLS private constructor() {
     }
 
     companion object Facade : Logger() {
-        private const val DEFAULT_VERSION = 1
+        internal const val DEFAULT_VERSION = 1
         private var version: Int = DEFAULT_VERSION
             get() {
                 return field.also { field = DEFAULT_VERSION }
