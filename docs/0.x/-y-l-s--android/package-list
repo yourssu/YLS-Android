@@ -1,22 +1,49 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
-$dokka.location:com.yourssu.logging.system.worker////PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.worker/index.html
-$dokka.location:com.yourssu.logging.system.worker/HttpService///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.worker/-http-service/index.html
-$dokka.location:com.yourssu.logging.system.worker/HttpService/putLog/#com.yourssu.logging.system.YLSEventData/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.worker/-http-service/put-log.html
-$dokka.location:com.yourssu.logging.system.worker/YLSResponse///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.worker/-y-l-s-response/index.html
-$dokka.location:com.yourssu.logging.system.worker/YLSResponse/YLSResponse/#kotlin.String/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.worker/-y-l-s-response/-y-l-s-response.html
-$dokka.location:com.yourssu.logging.system.worker/YLSResponse/a/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.worker/-y-l-s-response/a.html
+$dokka.location:com.yourssu.logging.system.remote////PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/index.html
+$dokka.location:com.yourssu.logging.system.remote//toLogListRequest/kotlin.collections.List[com.yourssu.logging.system.YLSEventData]#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/to-log-list-request.html
+$dokka.location:com.yourssu.logging.system.remote//toLoggingRequest/com.yourssu.logging.system.YLSEventData#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/to-logging-request.html
+$dokka.location:com.yourssu.logging.system.remote/LogListRequest///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-log-list-request/index.html
+$dokka.location:com.yourssu.logging.system.remote/LogListRequest/LogListRequest/#kotlin.collections.List[com.yourssu.logging.system.remote.LoggingRequest]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-log-list-request/-log-list-request.html
+$dokka.location:com.yourssu.logging.system.remote/LogListRequest/eventList/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-log-list-request/event-list.html
+$dokka.location:com.yourssu.logging.system.remote/LogListResponse///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-log-list-response/index.html
+$dokka.location:com.yourssu.logging.system.remote/LogListResponse/LogListResponse/#kotlin.Boolean#com.yourssu.logging.system.remote.LogListRequest/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-log-list-response/-log-list-response.html
+$dokka.location:com.yourssu.logging.system.remote/LogListResponse/result/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-log-list-response/result.html
+$dokka.location:com.yourssu.logging.system.remote/LogListResponse/success/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-log-list-response/success.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingRequest///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-request/index.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingRequest/LoggingRequest/#kotlin.String#kotlin.String#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-request/-logging-request.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingRequest/event/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-request/event.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingRequest/hashedId/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-request/hashed-id.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingRequest/timestamp/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-request/timestamp.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingResponse///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-response/index.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingResponse/LoggingResponse/#kotlin.Boolean#com.yourssu.logging.system.remote.LoggingRequest/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-response/-logging-response.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingResponse/result/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-response/result.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingResponse/success/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-response/success.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingService///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-service/index.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingService/putLog/#com.yourssu.logging.system.remote.LoggingRequest/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-service/put-log.html
+$dokka.location:com.yourssu.logging.system.remote/LoggingService/putLogList/#com.yourssu.logging.system.remote.LogListRequest/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system.remote/-logging-service/put-log-list.html
 $dokka.location:com.yourssu.logging.system////PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/index.html
-$dokka.location:com.yourssu.logging.system/HashUtil///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-hash-util/index.html
-$dokka.location:com.yourssu.logging.system/HashUtil/hashId/#kotlin.String/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-hash-util/hash-id.html
-$dokka.location:com.yourssu.logging.system/YLS.Companion///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-companion/index.html
-$dokka.location:com.yourssu.logging.system/YLS.Companion/flush/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-companion/flush.html
-$dokka.location:com.yourssu.logging.system/YLS.Companion/generateRandomId/#kotlin.Int/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-companion/generate-random-id.html
-$dokka.location:com.yourssu.logging.system/YLS.Companion/getTimestampISO8601/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-companion/get-timestamp-i-s-o8601.html
-$dokka.location:com.yourssu.logging.system/YLS.Companion/init/#kotlin.String#kotlin.String#com.yourssu.logging.system.YLS.Logger/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-companion/init.html
-$dokka.location:com.yourssu.logging.system/YLS.Companion/log/#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-companion/log.html
+$dokka.location:com.yourssu.logging.system//logAppInit/com.yourssu.logging.system.YLS.Facade#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-app-init.html
+$dokka.location:com.yourssu.logging.system//logClick/com.yourssu.logging.system.YLS.Facade#kotlin.String#kotlin.String#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-click.html
+$dokka.location:com.yourssu.logging.system//logDeepLinkEntry/com.yourssu.logging.system.YLS.Facade#kotlin.String#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-deep-link-entry.html
+$dokka.location:com.yourssu.logging.system//logEvent/com.yourssu.logging.system.YLS.Facade#kotlin.String#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-event.html
+$dokka.location:com.yourssu.logging.system//logScreenEntry/com.yourssu.logging.system.YLS.Facade#kotlin.String#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-screen-entry.html
+$dokka.location:com.yourssu.logging.system//logScreenExit/com.yourssu.logging.system.YLS.Facade#kotlin.String#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/log-screen-exit.html
 $dokka.location:com.yourssu.logging.system/YLS.DebugLogger///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-debug-logger/index.html
 $dokka.location:com.yourssu.logging.system/YLS.DebugLogger/DebugLogger/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-debug-logger/-debug-logger.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/index.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/createLog/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/create-log.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/flush/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/flush.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/generateRandomId/#kotlin.Int/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/generate-random-id.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/getTimestamp/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/get-timestamp.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/hashString/#kotlin.String#kotlin.String/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/hash-string.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/init/#kotlin.String#kotlin.String#com.yourssu.logging.system.YLS.Logger/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/init.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/log/#com.yourssu.logging.system.YLSEventData/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/log.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/log/#kotlin.Array[kotlin.Pair[kotlin.String,kotlin.Any]]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/log.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/setDefaultEvent/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/set-default-event.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/setLogger/#com.yourssu.logging.system.YLS.Logger/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/set-logger.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/setUserId/#kotlin.String/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/set-user-id.html
+$dokka.location:com.yourssu.logging.system/YLS.Facade/version/#kotlin.Int/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-facade/version.html
 $dokka.location:com.yourssu.logging.system/YLS.Logger///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-logger/index.html
 $dokka.location:com.yourssu.logging.system/YLS.Logger/Logger/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-logger/-logger.html
 $dokka.location:com.yourssu.logging.system/YLS.Logger/enqueue/#com.yourssu.logging.system.YLSEventData/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-logger/enqueue.html
@@ -25,10 +52,11 @@ $dokka.location:com.yourssu.logging.system/YLS.RemoteLogger///PointingToDeclarat
 $dokka.location:com.yourssu.logging.system/YLS.RemoteLogger/RemoteLogger/#kotlin.String#android.content.Context/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/-remote-logger/-remote-logger.html
 $dokka.location:com.yourssu.logging.system/YLS///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s/index.html
 $dokka.location:com.yourssu.logging.system/YLSEventData///PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s-event-data/index.html
-$dokka.location:com.yourssu.logging.system/YLSEventData/YLSEventData/#kotlin.String#kotlin.String#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s-event-data/-y-l-s-event-data.html
+$dokka.location:com.yourssu.logging.system/YLSEventData/YLSEventData/#kotlin.String#kotlin.String#kotlin.Int#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s-event-data/-y-l-s-event-data.html
 $dokka.location:com.yourssu.logging.system/YLSEventData/event/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s-event-data/event.html
-$dokka.location:com.yourssu.logging.system/YLSEventData/hashedID/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s-event-data/hashed-i-d.html
+$dokka.location:com.yourssu.logging.system/YLSEventData/hashedId/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s-event-data/hashed-id.html
 $dokka.location:com.yourssu.logging.system/YLSEventData/timestamp/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s-event-data/timestamp.html
+$dokka.location:com.yourssu.logging.system/YLSEventData/version/#/PointingToDeclaration/-y-l-s--android/com.yourssu.logging.system/-y-l-s-event-data/version.html
 com.yourssu.logging.system
-com.yourssu.logging.system.worker
+com.yourssu.logging.system.remote
 
