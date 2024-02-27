@@ -4,7 +4,7 @@ fun YLS.Facade.logEvent(
     eventName: String,
     vararg extra: Pair<String, Any>,
 ) {
-    YLS.log("event" to eventName, *extra)
+    YLS.log("name" to eventName, *extra)
 }
 
 fun YLS.Facade.logAppInit(vararg extra: Pair<String, Any>) {
