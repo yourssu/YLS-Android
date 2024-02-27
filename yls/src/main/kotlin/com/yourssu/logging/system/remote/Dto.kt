@@ -7,6 +7,7 @@ fun YLSEventData.toLoggingRequest(): LoggingRequest {
     return LoggingRequest(
         hashedId = hashedId,
         timestamp = timestamp,
+        version = version,
         event = event,
     )
 }
@@ -16,6 +17,8 @@ data class LoggingRequest(
     val hashedId: String,
     @SerializedName("timestamp")
     val timestamp: String,
+    @SerializedName("version")
+    val version: Int,
     @SerializedName("event")
     val event: Map<String, Any>,
 )
