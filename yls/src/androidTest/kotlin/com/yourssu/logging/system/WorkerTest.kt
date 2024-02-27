@@ -41,6 +41,7 @@ class WorkerTest {
         val eventData = YLSEventData(
             hashedId = "aaaabbbbccccddddaaaabbbbccccdddd",
             timestamp = "2023-12-04T10:30:00Z",
+            version = 1,
             event = mapOf("platform" to "android", "event" to "AppInitialEntry"),
         )
 
@@ -66,6 +67,7 @@ class WorkerTest {
             YLSEventData(
                 hashedId = "aaaabbbbccccddddaaaabbbbccccdddd",
                 timestamp = "2023-12-04T10:30:00Z",
+                version = 1,
                 event = mapOf("platform" to "android", "event" to "AppInitialEntry"),
             ),
         )

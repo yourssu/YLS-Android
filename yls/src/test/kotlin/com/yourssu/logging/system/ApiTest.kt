@@ -46,7 +46,7 @@ class ApiTest {
 
         val eventData = YLSEventData(
             hashedId = "testtest",
-            timestamp = "2023-12-04T10:30:00Z",
+            timestamp = YLS.getTimestamp(),
             version = 1,
             event = mapOf("event" to "test"),
         )
@@ -63,7 +63,7 @@ class ApiTest {
         val eventDataList = listOf(
             YLSEventData(
                 hashedId = "testtest",
-                timestamp = "2023-12-04T10:30:00Z",
+                timestamp = YLS.getTimestamp(),
                 version = 1,
                 event = mapOf("event" to "test"),
             ),
