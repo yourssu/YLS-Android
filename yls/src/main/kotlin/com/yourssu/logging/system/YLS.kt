@@ -222,11 +222,13 @@ class YLS private constructor() {
         /**
          * 현재 시각을 ISO 8601 포맷의 문자열을 반환합니다.
          *
+         * "yyyy-MM-dd'T'HH:mm:ss'Z'"
+         *
          * @return ISO 8601 format string of current
          */
         fun getTimestamp(): String {
             return OffsetDateTime.now(ZoneOffset.UTC)
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
+                .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
         }
 
         /** SHA-256 알고리즘으로 `origin`을 암호화 한 문자열을 반환합니다. */
