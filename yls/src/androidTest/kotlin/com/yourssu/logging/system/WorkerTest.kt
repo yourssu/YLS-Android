@@ -50,7 +50,7 @@ class WorkerTest {
         val worker = TestListenableWorkerBuilder<RemoteLoggingWorker>(
             context = context,
             inputData = workDataOf(
-                RemoteLoggingWorker.KEY_LOGGING_URL to "http://52.78.169.59:8085/",
+                RemoteLoggingWorker.KEY_LOGGING_URL to "your api url",
                 RemoteLoggingWorker.KEY_LOGGING_SINGLE_DATA to json,
             ),
         ).build()

@@ -31,8 +31,7 @@ class ApiTest {
             .build()
 
         retrofit = Retrofit.Builder()
-            .baseUrl("http://52.78.169.59:8085/")    // 실제 Api 테스트
-//            .baseUrl(server.url("/"))         // 가짜 Response 테스트
+            .baseUrl(server.url("/"))         // 가짜 Response 테스트
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
