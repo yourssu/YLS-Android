@@ -41,6 +41,7 @@ class WorkerTest {
         val eventData = YLSEventData(
             hashedId = "aaaabbbbccccddddaaaabbbbccccdddd",
             timestamp = "2023-12-04T10:30:00Z",
+            version = 1,
             event = mapOf("platform" to "android", "event" to "AppInitialEntry"),
         )
 
@@ -49,7 +50,7 @@ class WorkerTest {
         val worker = TestListenableWorkerBuilder<RemoteLoggingWorker>(
             context = context,
             inputData = workDataOf(
-                RemoteLoggingWorker.KEY_LOGGING_URL to "http://52.78.169.59:8085/",
+                RemoteLoggingWorker.KEY_LOGGING_URL to "your api url",
                 RemoteLoggingWorker.KEY_LOGGING_SINGLE_DATA to json,
             ),
         ).build()
@@ -66,6 +67,7 @@ class WorkerTest {
             YLSEventData(
                 hashedId = "aaaabbbbccccddddaaaabbbbccccdddd",
                 timestamp = "2023-12-04T10:30:00Z",
+                version = 1,
                 event = mapOf("platform" to "android", "event" to "AppInitialEntry"),
             ),
         )

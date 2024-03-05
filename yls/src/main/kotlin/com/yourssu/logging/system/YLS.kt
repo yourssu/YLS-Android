@@ -1,6 +1,8 @@
 package com.yourssu.logging.system
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -8,9 +10,12 @@ import androidx.work.workDataOf
 import com.google.gson.Gson
 import com.yourssu.logging.system.remote.RemoteLoggingWorker
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.TimeZone
 
 /**
  * Yourssu Logging System, inspired by [Timber](https://github.com/JakeWharton/timber)
@@ -222,11 +227,20 @@ class YLS private constructor() {
         /**
          * 현재 시각을 ISO 8601 포맷의 문자열을 반환합니다.
          *
+         * "yyyy-MM-dd'T'HH:mm:ss'Z'"
+         *
          * @return ISO 8601 format string of current
          */
+        @SuppressLint("SimpleDateFormat")
         fun getTimestamp(): String {
-            return OffsetDateTime.now(ZoneOffset.UTC)
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                OffsetDateTime.now(ZoneOffset.UTC)
+                    .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+            } else {
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").apply {
+                    timeZone = TimeZone.getTimeZone("UTC")
+                }.format(Date())
+            }
         }
 
         /** SHA-256 알고리즘으로 `origin`을 암호화 한 문자열을 반환합니다. */
